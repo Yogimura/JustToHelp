@@ -24,9 +24,9 @@ public class Main {
     private static void getGroups(Integer size) {
         System.out.println("Groups of " + numberSpell[size-1]);
         for(int i = 1; i <= 45; i++) {
-            grupo gp = new grupo(i, size, values);
-            gp.validar();
-            if(gp.getValores_validos().isEmpty()) {
+            Group gp = new Group(i, size, values);
+            gp.validate();
+            if(gp.getValidValues().isEmpty()) {
                 continue;
             }
             System.out.println(gp);
@@ -35,122 +35,122 @@ public class Main {
 }
 
 @Getter @Setter
-class grupo {
-    private int valor_final;
+class Group {
+    private int fullValue;
     private int size;
-    private Set<Integer> valores_validos;
-    private Set<Integer> valores_invalidos;
-    private List<Integer> valores;
+    private Set<Integer> validValues;
+    private Set<Integer> invalidValues;
+    private List<Integer> optionValues;
 
-    public grupo(int valor_final, int size, List<Integer> valores) {
-        this.valor_final = valor_final;
+    public Group(int fullValue, int size, List<Integer> optionValues) {
+        this.fullValue = fullValue;
         this.size = size;
-        this.valores = valores;
+        this.optionValues = optionValues;
     }
 
-    public void validar() {
-        valores_validos = StrategyManager.runTh(this);
-        valores_invalidos = getValoresInvalidos();
+    public void validate() {
+        validValues = StrategyManager.run(this);
+        invalidValues = extractInvalidValues();
     }
 
-    private Set<Integer> getValoresInvalidos() {
-        Set<Integer> invals = new HashSet<>();
-        for(Integer val: valores) {
-            if (!valores_validos.contains(val)) {
-                invals.add(val);
+    private Set<Integer> extractInvalidValues() {
+        Set<Integer> invalids = new HashSet<>();
+        for(Integer val: optionValues) {
+            if (!validValues.contains(val)) {
+                invalids.add(val);
             }
         }
 
-        return invals;
+        return invalids;
     }
 
     @Override
     public String toString() {
-        return "grupo{" +
-                "valores_validos=" + getValores_validos() +
-                ", valores_invalidos=" + getValores_invalidos() +
-                ", valor_final=" + getValor_final() +
+        return "Group{" +
+                "validValues=" + getValidValues() +
+                ", invalidValues=" + getInvalidValues() +
+                ", fullValue=" + getFullValue() +
                 '}';
     }
 }
 
-interface sizeIterate<T> {
-    Set<T> iterateTh(List<T> t, Integer i);
+interface Iterate<T> {
+    Set<T> iterateThrough(List<T> t, Integer i);
 }
 
 class StrategyManager {
-    public static Set<Integer> runTh(grupo gp) {
-        sizeIterate<Integer> go = iterStrategyFactory.create(gp.getSize());
-        assert go != null;
-        return go.iterateTh(gp.getValores(), gp.getValor_final());
+    public static Set<Integer> run(Group gp) {
+        Iterate<Integer> iterator = iterateStrategyFactory.create(gp.getSize());
+        assert iterator != null;
+        return iterator.iterateThrough(gp.getOptionValues(), gp.getFullValue());
     }
 }
 
-class size2strategy implements sizeIterate<Integer>{
+class size2strategy implements Iterate<Integer> {
 
     @Override
-    public Set<Integer> iterateTh(List<Integer> values, Integer finals) {
-        Set<Integer> valids = new HashSet<>();
+    public Set<Integer> iterateThrough(List<Integer> values, Integer finals) {
+        Set<Integer> valid = new HashSet<>();
         for(Integer a: values) {
             for (Integer b: values) {
                 if((a+b) == finals && !a.equals(b)) {
-                    valids.add(a);
-                    valids.add(b);
+                    valid.add(a);
+                    valid.add(b);
                 }
             }
         }
 
-        return valids;
+        return valid;
     }
 }
 
-class size3strategy implements sizeIterate<Integer> {
+class size3strategy implements Iterate<Integer> {
 
     @Override
-    public Set<Integer> iterateTh(List<Integer> values, Integer finals) {
-        Set<Integer> valids = new HashSet<>();
+    public Set<Integer> iterateThrough(List<Integer> values, Integer finals) {
+        Set<Integer> valid = new HashSet<>();
         for(Integer a: values) {
             for (Integer b: values) {
                 for (Integer c: values) {
                     if((a+b+c) == finals && !a.equals(b) && !b.equals(c) && !c.equals(a)) {
-                        valids.add(a);
-                        valids.add(b);
-                        valids.add(c);
+                        valid.add(a);
+                        valid.add(b);
+                        valid.add(c);
                     }
                 }
             }
         }
 
-        return valids;
+        return valid;
     }
 }
 
-class size4strategy implements sizeIterate<Integer> {
+class size4strategy implements Iterate<Integer> {
 
     @Override
-    public Set<Integer> iterateTh(List<Integer> values, Integer finals) {
-        Set<Integer> valids = new HashSet<>();
+    public Set<Integer> iterateThrough(List<Integer> values, Integer finals) {
+        Set<Integer> valid = new HashSet<>();
         for (Integer a: values) {
             for (Integer b: values) {
                 for (Integer c: values) {
                     for (Integer d: values) {
                         if((a+b+c+d) == finals && !a.equals(b) && !b.equals(c) && !c.equals(d) && !d.equals(a) && !a.equals(c) && !b.equals(d)) {
-                            valids.add(a);
-                            valids.add(b);
-                            valids.add(c);
-                            valids.add(d);
+                            valid.add(a);
+                            valid.add(b);
+                            valid.add(c);
+                            valid.add(d);
                         }
                     }
                 }
             }
         }
 
-        return valids;
+        return valid;
     }
 }
 
-class iterStrategyFactory {
-    public static sizeIterate<Integer> create(int size) {
+class iterateStrategyFactory {
+    public static Iterate<Integer> create(int size) {
         switch (size) {
             case 2 -> {
                 return new size2strategy();
