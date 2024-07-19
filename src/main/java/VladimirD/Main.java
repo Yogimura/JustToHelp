@@ -9,12 +9,28 @@ import java.util.List;
 import java.util.Set;
 
 public class Main {
+
+    private static final List<Integer> values = new ArrayList<>(List.of(1,2,3,4,5,6,7,8,9));
+    private static final String[] numberSpell = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"};
+
     public static void main(String[] args) {
-        List<Integer> valores = new ArrayList<>(List.of(1,2,3,4,5,6,7,8,9));
-        grupo ocho = new grupo(30, 4, valores);
-        ocho.validar();
-        System.out.println(ocho.getValores_validos());
-        System.out.println(ocho.getValores_invalidos());
+        getGroups(2);
+        System.out.println();
+        getGroups(3);
+        System.out.println();
+        getGroups(4);
+    }
+
+    private static void getGroups(Integer size) {
+        System.out.println("Groups of " + numberSpell[size-1]);
+        for(int i = 1; i <= 45; i++) {
+            grupo gp = new grupo(i, size, values);
+            gp.validar();
+            if(gp.getValores_validos().isEmpty()) {
+                continue;
+            }
+            System.out.println(gp);
+        }
     }
 }
 
@@ -48,6 +64,14 @@ class grupo {
         return invals;
     }
 
+    @Override
+    public String toString() {
+        return "grupo{" +
+                "valores_validos=" + getValores_validos() +
+                ", valores_invalidos=" + getValores_invalidos() +
+                ", valor_final=" + getValor_final() +
+                '}';
+    }
 }
 
 interface sizeIterate<T> {
@@ -69,7 +93,7 @@ class size2strategy implements sizeIterate<Integer>{
         Set<Integer> valids = new HashSet<>();
         for(Integer a: values) {
             for (Integer b: values) {
-                if((a+b) == finals && a != b) {
+                if((a+b) == finals && !a.equals(b)) {
                     valids.add(a);
                     valids.add(b);
                 }
@@ -88,7 +112,7 @@ class size3strategy implements sizeIterate<Integer> {
         for(Integer a: values) {
             for (Integer b: values) {
                 for (Integer c: values) {
-                    if((a+b+c) == finals && a != b && b != c && c != a) {
+                    if((a+b+c) == finals && !a.equals(b) && !b.equals(c) && !c.equals(a)) {
                         valids.add(a);
                         valids.add(b);
                         valids.add(c);
@@ -110,7 +134,7 @@ class size4strategy implements sizeIterate<Integer> {
             for (Integer b: values) {
                 for (Integer c: values) {
                     for (Integer d: values) {
-                        if((a+b+c+d) == finals && a != b && b != c && c != d && d != a) {
+                        if((a+b+c+d) == finals && !a.equals(b) && !b.equals(c) && !c.equals(d) && !d.equals(a) && !a.equals(c) && !b.equals(d)) {
                             valids.add(a);
                             valids.add(b);
                             valids.add(c);
@@ -125,7 +149,7 @@ class size4strategy implements sizeIterate<Integer> {
     }
 }
 
-class iterStrategyFactory<T> {
+class iterStrategyFactory {
     public static sizeIterate<Integer> create(int size) {
         switch (size) {
             case 2 -> {
