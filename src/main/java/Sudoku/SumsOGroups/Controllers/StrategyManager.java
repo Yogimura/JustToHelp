@@ -1,4 +1,8 @@
-package Sudoku.SumsOGroups;
+package Sudoku.SumsOGroups.Controllers;
+
+import Sudoku.SumsOGroups.Factories.iterateFactory.iterateStrategyFactory;
+import Sudoku.SumsOGroups.POJO.Group;
+import Sudoku.SumsOGroups.Types.Iterate;
 
 import java.util.Set;
 
