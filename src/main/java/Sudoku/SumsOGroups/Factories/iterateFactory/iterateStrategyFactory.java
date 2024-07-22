@@ -6,8 +6,9 @@ import Sudoku.SumsOGroups.SizeStrategies.size4strategy;
 import Sudoku.SumsOGroups.SizeStrategies.size5strategy;
 import Sudoku.SumsOGroups.Types.Iterate;
 
-public class iterateStrategyFactory {
-    public static Iterate<Integer> create(int size) {
+public enum iterateStrategyFactory {
+    INSTANCE;
+    public Iterate<Integer> create(int size) {
         switch (size) {
             case 2 -> {
                 return new size2strategy();

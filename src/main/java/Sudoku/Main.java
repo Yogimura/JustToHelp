@@ -23,14 +23,13 @@ public class Main {
     }
 
     private static void getGroups(Integer size) {
-        GroupFactory groupFactory = new GroupFactory();
         System.out.println("Groups of " + numberSpell[size-1]);
         List<List<Integer>> options = new ArrayList<>();
         for(int i = 0; i < size; i++) {
             options.add(values);
         }
         for(int i = 1; i <= 45; i++) {
-            Group gp = groupFactory.run(new baseGroup(i, size, options));
+            Group gp = GroupFactory.INSTANCE.run(new baseGroup(i, size, options));
             gp.validate();
             if(gp.getValidValues().isEmpty()) {
                 continue;

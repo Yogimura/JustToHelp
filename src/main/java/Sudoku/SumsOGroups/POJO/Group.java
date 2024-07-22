@@ -45,9 +45,9 @@ public class Group {
     @Override
     public String toString() {
         return "Group{" +
-                "fullValue=" + getFullValue() +
-                ", validValues=" + getValidValues() +
+                "validValues=" + getValidValues() +
                 ", invalidValues=" + getInvalidValues() +
+                ", fullValue=" + getFullValue() +
                 '}';
     }
 }
