@@ -1,6 +1,5 @@
 package Sudoku;
 
-import Sudoku.SumsOGroups.Factories.groupFactory.Parse.Parser;
 import Sudoku.SumsOGroups.Factories.groupFactory.Parse.baseGroup;
 import Sudoku.SumsOGroups.Factories.groupFactory.Strategies.GroupFactory;
 import Sudoku.SumsOGroups.POJO.Group;
@@ -31,9 +30,6 @@ public class Main {
         System.out.println();
         getGroups(5);
         System.out.println("\n");
-        Group group = GroupFactory.create(new Parser("4,2:"+values+":"+values));
-        group.validate();
-        System.out.println(group.getValidValues());
     }
 
     private static void getGroups(Integer size) {

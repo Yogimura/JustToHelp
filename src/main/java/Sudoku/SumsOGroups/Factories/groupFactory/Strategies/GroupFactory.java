@@ -5,23 +5,24 @@ import Sudoku.SumsOGroups.Factories.groupFactory.Parse.baseGroup;
 import Sudoku.SumsOGroups.POJO.Group;
 import Sudoku.SumsOGroups.Types.GroupCreationStrategy;
 
-import java.util.Objects;
+import java.util.Optional;
 
-public abstract class GroupFactory{
+public abstract class GroupFactory {
+    @SuppressWarnings("unused")
     abstract Group createBy(GroupCreationStrategy base);
 
     private static Group retrieve(GroupCreationStrategy o) {
-        if(o.getClass().equals(Parser.class)) {
-            return new ParseStrategy().createBy(o);
-        } else if(o.getClass().equals(baseGroup.class)) {
-            return new ConstructorStrategy().createBy(o);
-        }else {
+        if (o instanceof Parser) {
+            return ParseStrategy.INSTANCE().createBy(o);
+        } else if (o instanceof baseGroup) {
+            return ConstructorStrategy.INSTANCE().createBy(o);
+        } else {
             return null;
         }
     }
 
     public static Group create(GroupCreationStrategy o) {
-        return Objects.requireNonNull(retrieve(o));
+        return Optional.of(retrieve(o)).orElseThrow(() -> new RuntimeException("Error"));
     }
 
 }
