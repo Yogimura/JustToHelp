@@ -1,6 +1,7 @@
 package Sudoku.SumsOGroups.POJO;
 
 import Sudoku.SumsOGroups.Controllers.StrategyManager;
+import Sudoku.SumsOGroups.Factories.groupFactory.Parse.baseGroup;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,6 +16,12 @@ public class Group {
     private Set<Integer> validValues;
     private Set<Integer> invalidValues;
     private List<List<Integer>> optionValues;
+
+    public Group(baseGroup base) {
+        this.fullValue = base.fullValue();
+        this.size = base.size();
+        this.optionValues = base.options();
+    }
 
     public Group(int fullValue, int size, List<List<Integer>> optionValues) {
         this.fullValue = fullValue;

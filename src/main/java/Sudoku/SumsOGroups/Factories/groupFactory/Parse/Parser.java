@@ -1,16 +1,29 @@
 package Sudoku.SumsOGroups.Factories.groupFactory.Parse;
 
 import Sudoku.SumsOGroups.POJO.Group;
+import Sudoku.SumsOGroups.Types.GroupCreationStrategy;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Parser {
+@NoArgsConstructor
+public class Parser implements GroupCreationStrategy {
 
     List<Character> values = new ArrayList<>(List.of('1','2','3','4','5','6','7','8','9'));
-    public Group parse(String base) {
+
+    @Getter @Setter
+    String base;
+
+    public Parser(String base) {
+        this.base = base;
+    }
+    // [finalValue],[NumberOfValues]:[column1]:[column2]:[column3]:...
+    public Group parse() {
         if (!error(base)) {
             System.out.println("Formato incorrecto");
             return null;

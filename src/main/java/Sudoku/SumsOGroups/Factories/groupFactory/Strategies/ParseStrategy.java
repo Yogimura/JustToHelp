@@ -2,12 +2,12 @@ package Sudoku.SumsOGroups.Factories.groupFactory.Strategies;
 
 import Sudoku.SumsOGroups.Factories.groupFactory.Parse.Parser;
 import Sudoku.SumsOGroups.POJO.Group;
-import Sudoku.SumsOGroups.Types.Addable;
+import Sudoku.SumsOGroups.Types.GroupCreationStrategy;
 
-public class ParseStrategy implements Addable<String> {
-    Parser parser = new Parser();
+public class ParseStrategy extends GroupFactory {
     @Override
-    public Group create(String string) {
-        return parser.parse(string);
+    Group createBy(GroupCreationStrategy base) {
+        Parser parser = (Parser) base;
+        return parser.parse();
     }
 }

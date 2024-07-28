@@ -14,7 +14,7 @@ public class ParseTest {
     @DisplayName("Basic Parse")
     public void parse() {
         Parser parser = new Parser();
-        Group gp = parser.parse("4,2:1,3:1,3");
+        Group gp = parser.parse();
         assert gp != null;
         gp.validate();
         System.out.println(gp);
